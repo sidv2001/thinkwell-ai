@@ -232,7 +232,7 @@ def start_followup_session(session_results, previous_transcripts):
         f"Attached is the transcripts from the previous sessions: {list_of_lists_of_dicts_to_string_with_keys(previous_transcripts)} "
         "In the previous sessions, you have iterated on a case summary and plan for the upcoming sessions. "
         "Attached are the patient case summary and your plan for this and future sessions. "
-        f"Document: \n {dict_to_string(session_results)} "
+        f"Document: \n {session_results} "
         f"I have attached another module on Case Conceptualization and Treatment Planning for CBT to help you interpret this: "
         f"{module_texts['4']} "
         "Keep in mind that the effectiveness of therapy is often based on Non-Specific factors such as a strong Therapeutic Relationship. "
@@ -263,7 +263,7 @@ def continue_followup_session(
         f"Attached are the transcripts from the previous sessions: {list_of_lists_of_dicts_to_string_with_keys(previous_transcripts)} "
         "In the previous sessions, you have iterated on a case summary and plan for the upcoming sessions. "
         "Attached are the patient case summary and your plan for this and future sessions. "
-        f"Document: \n {dict_to_string(session_results)} "
+        f"Document: \n {session_results} "
         f"I have attached another module on Case Conceptualization and Treatment Planning for CBT to help you interpret this: "
         f"{module_texts['4']} "
         "Keep in mind that the effectiveness of therapy is often based on Non-Specific factors such as a strong Therapeutic Relationship. "
@@ -413,7 +413,7 @@ def logout_button():
                 max_tokens=1024,
                 messages=[{"role": "user", "content": fin_prompt}],
             )
-            session_results = string_to_dict(res)
+            session_results = res["content"]["text"]
             st.session_state["authenticated"] = False
             st.session_state.messages = []
             st.rerun()
