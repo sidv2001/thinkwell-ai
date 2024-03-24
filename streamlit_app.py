@@ -413,7 +413,10 @@ def logout_button():
                 max_tokens=1024,
                 messages=[{"role": "user", "content": fin_prompt}],
             )
-            session_results = res["content"]["text"]
+            session_results = res.content[0].text
+            previous_transcripts = st.session_state.messages
+            print(previous_transcripts)
+            print(session_results)
             st.session_state["authenticated"] = False
             st.session_state.messages = []
             st.rerun()
