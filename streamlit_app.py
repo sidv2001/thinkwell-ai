@@ -9,8 +9,8 @@ client = Anthropic(
 )
 
 # Hardcoded user credentials (use environment variables or a more secure method in production)
-USER_ID = "admin"
-PASSWORD = "password"
+USER_ID = "Jonathan"
+PASSWORD = "LLMsarefun"
 
 files_dir = "data"
 
