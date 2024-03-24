@@ -16,8 +16,6 @@ files_dir = "data"
 
 module_texts = {}
 
-session_results = {}
-previous_transcripts = []
 
 filenames = [
     "Module - 2 Non specific factors (therapeutic relationship).txt",
@@ -346,6 +344,10 @@ def chat_interface():
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "session_results" not in st.session_state:
+        st.session_state.session_results = ""
+    if "previous_transcripts" not in st.session_state:
+        st.session_state.previous_transcripts = []
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -356,14 +358,17 @@ def chat_interface():
                 init_prompt = initiate_session_1()
             else:
                 init_prompt = start_followup_session(
-                    session_results, previous_transcripts
+                    st.session_state.session_results,
+                    st.session_state.previous_transcripts,
                 )
             with client.messages.stream(
                 max_tokens=1024,
                 messages=[{"role": "user", "content": init_prompt}],
                 model="claude-2.1",
             ) as stream:
+                print(init_prompt)
                 response = st.write_stream(stream.text_stream)
+
         st.session_state.messages.append({"role": "assistant", "content": response})
 
     if prompt := st.chat_input("Please type in your response here"):
@@ -378,8 +383,8 @@ def chat_interface():
             continue_prompt = continue_followup_session(
                 prompt,
                 list_of_dicts_to_string(st.session_state.messages),
-                session_results,
-                previous_transcripts,
+                st.session_state.session_results,
+                st.session_state.previous_transcripts,
             )
 
         with st.chat_message("assistant"):
@@ -405,18 +410,18 @@ def logout_button():
             else:
                 fin_prompt = end_followup_session(
                     list_of_dicts_to_string(st.session_state.messages),
-                    session_results,
-                    previous_transcripts,
+                    st.session_state.session_results,
+                    st.session_state.previous_transcripts,
                 )
             res = client.messages.create(
                 model="claude-2.1",
                 max_tokens=1024,
                 messages=[{"role": "user", "content": fin_prompt}],
             )
-            session_results = res.content[0].text
-            previous_transcripts = st.session_state.messages
-            print(previous_transcripts)
-            print(session_results)
+            st.session_state.session_results = res.content[0].text
+            st.session_state.previous_transcripts = st.session_state.messages
+            # print(previous_transcripts)
+            # print(session_results)
             st.session_state["authenticated"] = False
             st.session_state.messages = []
             st.rerun()
