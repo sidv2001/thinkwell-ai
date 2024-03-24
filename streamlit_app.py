@@ -326,7 +326,12 @@ def end_followup_session(transcript, session_results, previous_transcripts):
 
 
 def login_page():
-    st.title("Login Page")
+    st.title("Hi, welcome to ThinkWell AI")
+    st.markdown(
+        "<p style='color: #003049; font-size: 120%;'>Your AI powered mental health companion.</p>",
+        unsafe_allow_html=True,
+    )
+
     user_id = st.text_input("User ID", value="", max_chars=50)
     password = st.text_input("Password", value="", type="password", max_chars=50)
 
@@ -340,7 +345,7 @@ def login_page():
 
 
 def chat_interface():
-    st.title("Thinkwell-AI" + str(st.session_state["session_id"]))
+    st.title("Let's Talk!")
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -400,6 +405,11 @@ def chat_interface():
 
 def logout_button():
     with st.sidebar:
+        st.sidebar.markdown(
+            """
+        ThinkWell AI is your personal guide on the path to wellness. By remembering the conversations and drawing from the proven techniques of Cognitive Behavioral Therapy (CBT), it creates a tailored plan to help you manage stress, anxiety, and more. Think of it as a gentle nudge in the right direction, empowering you to take small steps towards a happier, healthier you.
+        """
+        )
         if st.button("Logout"):
             # for key in list(st.session_state.keys()):
             #     del st.session_state[key]
@@ -441,20 +451,22 @@ def main():
     )
 
     # Custom background color and font color
-    st.markdown(
-        """
-        <style>
-        .stApp { background-color: #98FF98; } /* Mint green background */
-        /* Font color for different elements */
-        .st-af { color: #333333; } /* Primary text color */
-        .st-ag { color: #606060; } /* Secondary text color, adjust as needed */
-        /* You might need to inspect the page and target specific elements based on their class for more precision */
-        h1, h2, h3, h4, h5, h6, p, .stTextInput>div>div>input { color: #606060; } /* Headers & text input */
-        .stButton>button { color: #606060; } /* Button text */
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
+    page_bg_img = """
+    <style>
+    .stApp {
+    background-image: url("https://img.freepik.com/free-photo/sky-sunset_53876-31348.jpg?w=1800&t=st=1711306994~exp=1711307594~hmac=40a1700338186e2533da006518243279075f24205f6e3fdcc96d8bb7dadc9abd");
+    background-size: cover;
+    }
+    .st-af { color: #333333; } /* Primary text color */
+    .st-af { color: #FCD7C7; } /* Primary text color */
+    .st-b7 { background-color: #FCD7C7; } /* Primary text color */
+    h1, h2, h3, h4, h5, h6 { color: #333333; } /* Headers & text input */
+    P { color: #333333;}
+    .st-emotion-cache-sh2krr p { color: #333333;}
+    .stContainer>div>div>div>div>div>div>div>div {color: #183850;} /* Prussian blue chat text color */
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
 
     if "authenticated" not in st.session_state:
         st.session_state["authenticated"] = False
